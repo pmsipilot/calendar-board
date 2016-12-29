@@ -7,18 +7,19 @@ export class CalendarRepository {
         this.factory = factory;
     }
 
-    findOne(calendar = 'primary', limit = 10) {
+    findOne(calendar = 'primary', start = new Date(), limit = 10) {
 
-        let dateStart = new Date();
-        let dateEnd = new Date();
-        dateEnd.setDate(dateEnd.getDate() + 1);
+        let dateStart = start;
+        dateStart.setHours(0);
+        let dateEnd = new Date(dateStart.valueOf()); //clone
+        dateEnd.setHours(23);
 
         return new Promise((resolve, reject) => {
             gapi.client.load('calendar', 'v3').then(() => {
                 const request = gapi.client.calendar.events.list({
                     calendarId: calendar,
                     timeMin: dateStart.toISOString(),
-                    //timeMax: dateEnd.toISOString(),
+                    timeMax: dateEnd.toISOString(),
                     maxResults: limit
                 });
 

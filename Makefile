@@ -1,21 +1,22 @@
-BIN_DIR = ./dist
-BIN_FILE = $(BIN_DIR)/app.js
+DIST_DIR = ./dist
+BIN_DIR = ./node_modules/.bin
+BIN_FILE = $(DIST_DIR)/app.js
 
-build: $(BIN_DIR) $(BIN_FILE)
-	./node_modules/.bin/browserify index.js -o $(BIN_FILE) -t [ babelify ]
+build: $(BIN_FILE)
 
 clean:
-	rm -rf ./node_modules $(BIN_DIR)
+	rm -rf ./node_modules $(DIST_DIR)
 
 dev: build
-	./node_modules/.bin/http-server .
+	$(BIN_DIR)/http-server .
 
 .PHONY: build clean dev
 
 node_modules: package.json
 	npm install
 
-$(BIN_DIR):
+$(DIST_DIR):
 	mkdir -p $@
 
-$(BIN_FILE): node_modules
+$(BIN_FILE): $(DIST_DIR) node_modules
+	$(BIN_DIR)/browserify index.js -o $(BIN_FILE) -t [ babelify ]

@@ -6,11 +6,15 @@ class Event {
         this.summary = summary;
         this.description = description;
         this.location = location;
-        this.attendees = attendees;
+        this._attendees = attendees;
         this.start = start;
         this.end = end;
         this.status = status;
         this.link = link;
+    }
+
+    get attendees() {
+        return this._attendees.filter(person => person.displayName != this.location);
     }
 }
 

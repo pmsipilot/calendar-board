@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 export class GoogleAuth {
 
     constructor() {
-        this.key = require('./../config/key.json');
+        this.key = require('./../../config/key.json');
         this.clientId = this.key.web.client_id;
         this.scopes = ['https://www.googleapis.com/auth/calendar.readonly'];
     }

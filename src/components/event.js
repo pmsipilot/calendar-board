@@ -1,11 +1,16 @@
 import { Component, Input } from '@angular/core';
 import { PersonLabelComponent } from './person-label';
+import { DateManager } from './../services/date';
 
 @Component({
     inputs: ['event', 'displayer'],
     selector: 'event-component',
     template: `
-    <div class="panel panel-default" *ngIf="displayer == 'full'">
+    <div class="panel panel-default"
+        [class.panel-warning]="isInProgress()"
+        [class.panel-danger]="isFinished()"
+        *ngIf="displayer == 'full'"
+    >
         <header class="panel-heading">
             {{ event.summary }}
             <span class="pull-right">{{ event.location }}</span>
@@ -15,7 +20,7 @@ import { PersonLabelComponent } from './person-label';
             <person-label-component *ngFor="let person of event.attendees" [person]="person"></person-label-component>
         </div>
         <footer class="panel-footer">
-            De {{ event.start.getHours() }}h{{ event.start.getMinutes() }} à {{ event.end.getHours() }}h{{ event.end.getMinutes() }}
+            De {{ getHourFormated(event.start) }} à {{ getHourFormated(event.end) }}
             <a class="pull-right" target="_blank" href="{{ event.link }}"><i class="fa fa-external-link"></i></a>
         </footer>
     </div>
@@ -26,8 +31,21 @@ import { PersonLabelComponent } from './person-label';
     `
 })
 export class EventComponent {
-    constructor() {
+    constructor(dateManager: DateManager) {
         this.event = {};
         this.displayer = 'full';
+        this.dateManager = dateManager;
+    }
+
+    getHourFormated(date) {
+        return (('0' + date.getHours()).slice(-2)) + 'h' + (('0' + date.getMinutes()).slice(-2));
+    }
+
+    isInProgress() {
+        return this.event.start < this.dateManager.now && this.event.end > this.dateManager.now;
+    }
+
+    isFinished() {
+        return this.event.end < this.dateManager.now;
     }
 }
