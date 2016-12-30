@@ -1,0 +1,10 @@
+web:
+    build: .
+    ports:
+        - 8080:80
+    environment:
+        CALENDARBOARD_CLIENT_ID: "12273950762-vkuo22l5n7mdvge870jklqj7vtuvv8qu.apps.googleusercontent.com"
+        CALENDARBOARD_CLIENT_SECRET: "this-is-so-secret"
+        CALENDARBOARD_PROJECT_ID: "calendar-board"
+        CALENDARBOARD_ORIGIN: "http://localhost:8080"
+
