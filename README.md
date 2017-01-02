@@ -29,8 +29,6 @@ Il est possible de déployer le projet grâce à un conteneur Docker.
 
 Pour cela, éditer les variables d'environnement du fichier `docker-compose.yml` avec les informations de connexion OAuth2 de Google.
 
-Il est également possible, de définir un volume sur le fichier `keys.json` tel que: `./monfichierkeys.json:/calendar-board/config/keys.json:ro`. Les variables d'environnement ne sont alors pas prises en compte.
-
 Ensuite, executer `docker-compose up`. Le service est ensuite accessible sur http://localhost:8080
 
 ## Contribution
