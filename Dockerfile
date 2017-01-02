@@ -2,7 +2,7 @@ FROM httpd:2.4
 
 MAINTAINER Cyprien DIOT <industrialisation@pmsipilot.com>
 
-RUN apt-get update && apt-get install -y curl jq make
+RUN apt-get update && apt-get install -y curl make
 
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && apt-get install -y nodejs
 
@@ -19,7 +19,5 @@ ADD index.js Makefile package.json /calendar-board/
 RUN cd /calendar-board && make node_modules
 ADD config/ /calendar-board/config/
 ADD src /calendar-board/src/
-
-
 
 ENTRYPOINT [ "/entrypoint.sh" ]

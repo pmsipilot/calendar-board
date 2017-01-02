@@ -1,4 +1,5 @@
 DIST_DIR = ./dist
+CONFIG_DIR = ./config
 BIN_DIR = ./node_modules/.bin
 BIN_FILE = $(DIST_DIR)/app.js
 
@@ -18,5 +19,8 @@ node_modules: package.json
 $(DIST_DIR):
 	mkdir -p $@
 
-$(BIN_FILE): $(DIST_DIR) node_modules
+$(BIN_FILE): $(DIST_DIR) $(CONFIG_DIR)/key.js node_modules
 	$(BIN_DIR)/browserify index.js -o $(BIN_FILE) -t [ babelify ]
+
+$(CONFIG_DIR)/key.js: $(CONFIG_DIR)/key.dist.js
+	cp $< $@

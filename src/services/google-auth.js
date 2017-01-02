@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
+import key from '../../config/key.js';
 
 @Injectable()
 export class GoogleAuth {
 
     constructor() {
-        this.key = require('./../../config/key.json');
-        this.clientId = this.key.web.client_id;
+        this.clientId = key.web.client_id;
         this.scopes = ['https://www.googleapis.com/auth/calendar.readonly'];
     }
 
@@ -19,7 +19,7 @@ export class GoogleAuth {
                 if (authResult && !authResult.error) {
                     return resolve();
                 }
-                console.log(authResult.error);
+
                 return reject(new Error(authResult.error));
             });
         });
