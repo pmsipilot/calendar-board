@@ -41,13 +41,17 @@ class AppComponent {
         this.lastTimer = null;
         this.loading = false;
         this.error = null;
+        this.auth = auth;
 
         this.dateManager = dateManager;
         this.calendarRepository = calendarRepository;
-        this.config = require('./../config/config.json');
 
         this.dateManager.subscribe(date => this.getCalendarsEvents(date));
-        auth.checkAuth().then(() => this.getCalendarsEvents());
+        this.init();
+    }
+
+    init() {
+        this.auth.checkAuth().then(() => this.getCalendarsEvents());
     }
 
     getCalendarsEvents(startDate = null) {
@@ -68,6 +72,10 @@ class AppComponent {
         }).catch(err => {
             this.loading = false;
             this.error = `Oops! Une erreur s'est produite : [${err.code}] ${err.message}`;
+
+            if (401 === err.code) {
+                this.init();
+            }
         });
 
         this.lastTimer = setTimeout(() => this.getCalendarsEvents(), 1000 * 60 * 10);
