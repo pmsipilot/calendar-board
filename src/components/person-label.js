@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 @Component({
     inputs: ['person'],
     selector: 'person-label-component',
-    styles: ['span { display: inline-block }'],
+    styles: ['span { display: inline-block; margin-bottom: .3em }'],
     template: `
     <span
         class="label"
