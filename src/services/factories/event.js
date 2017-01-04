@@ -29,9 +29,9 @@ export class EventFactory {
             data.summary,
             data.description,
             data.location,
-            data.attendees.map(person => this.personFactory.create(person)),
-            new Date(data.start.dateTime),
-            new Date(data.end.dateTime),
+            (data.attendees || []).map(person => this.personFactory.create(person)),
+            new Date(data.start.dateTime || data.start.date),
+            new Date(data.end.dateTime || data.end.date),
             data.confirmed,
             data.htmlLink
         );

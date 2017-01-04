@@ -10,6 +10,11 @@ class Calendar {
     getEventsByStartHour(hour) {
         return this.events.filter(event => event.start.getHours() == hour);
     }
+
+    getWholeDayEvents() {
+        console.log(this.events);
+        return this.events.filter(event => event.end - event.start === 86400000);
+    }
 }
 
 @Injectable()
