@@ -14,6 +14,8 @@ import { BoardComponent } from './components/board';
 import { EventComponent } from './components/event';
 import { PersonLabelComponent } from './components/person-label';
 
+import config from '../config/config.js';
+
 @Component({
     selector: 'pmsipilot-calendar-board',
     styles: ['section { margin: 0 10px }'],
@@ -65,7 +67,7 @@ class AppComponent {
         }
 
         Promise.all(
-            this.config.calendars.map(calendarId => this.calendarRepository.findOne(calendarId, startDate))
+            config.calendars.map(calendarId => this.calendarRepository.findOne(calendarId, startDate))
         ).then(calendars => {
             this.loading = false;
             this.calendars = calendars;
