@@ -16,8 +16,8 @@ RUN mkdir /calendar-board
 ADD docker/entrypoint.sh /entrypoint.sh
 ADD index.html htdocs/
 ADD index.js Makefile package.json /calendar-board/
-RUN cd /calendar-board && make node_modules
 ADD config/ /calendar-board/config/
 ADD src /calendar-board/src/
+RUN cd /calendar-board && make node_modules
 
 ENTRYPOINT [ "/entrypoint.sh" ]
