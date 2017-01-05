@@ -32,6 +32,14 @@ import { DateManager } from './../services/date';
             <p>La page se met à jour toutes les 10 min automatiquement. Vous pouvez appuyer sur le bouton <i class="fa fa-refresh"></i> pour réinitialiser la vue.</p>
         </div>
 
+        <div>
+            <div class="col-md-12" *ngIf="getWholeDayEvents().length > 0">
+                <article *ngFor="let event of getWholeDayEvents(hour)" class="col-md-6">
+                    <event-component [event]="event"></event-component>
+                </article>
+            </div>
+        </div>
+
         <div *ngFor="let hour of relativeHours">
             <!-- a changer pour ne pas avoir 2x getEventsByHour(hour) -->
             <div class="col-md-12" *ngIf="getEventsByHour(hour).length > 0">
@@ -48,6 +56,14 @@ import { DateManager } from './../services/date';
             <tr>
                 <th></th>
                 <th *ngFor="let calendar of calendars">{{ calendar.summary }}</th>
+            </tr>
+            <tr>
+                <th></th>
+                <td *ngFor="let calendar of calendars">
+                    <article *ngFor="let event of calendar.getWholeDayEvents()">
+                        <event-component [event]="event" [displayer]="'compact'"></event-component>
+                    </article>
+                </td>
             </tr>
             <tr *ngFor="let hour of hours">
                 <td>{{ hour }} h</td>
@@ -83,6 +99,16 @@ export class BoardComponent {
         return events;
     }
 
+    getWholeDayEvents(hour) {
+        let events = [];
+
+        this.calendars.forEach(calendar => {
+            events = events.concat(calendar.getWholeDayEvents());
+        });
+
+        return events;
+    }
+
     switchDisplayer(displayer) {
         this.displayer = displayer;
         localStorage.setItem('board-displayer', displayer);
@@ -90,8 +116,8 @@ export class BoardComponent {
 
     hasNothingToShow() {
         return this.calendars.every(calendar => {
-            let currentHour = this.dateManager.currentDate.getHours();
-            let hasFinishedEvents = calendar.events.find(event => event.start.getHours() < currentHour);
+            const currentHour = this.dateManager.currentDate.getHours();
+            const hasFinishedEvents = calendar.events.find(event => event.start.getHours() < currentHour);
 
             return calendar.events.length === 0 || hasFinishedEvents;
         });
