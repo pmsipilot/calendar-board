@@ -26,7 +26,9 @@ export class CalendarFactory {
     create(data) {
         return new Calendar(
             data.summary,
-            data.items.map(event => this.eventFactory.create(event))
+            data.items
+                .filter(event => event.visibility !== 'private')
+                .map(event => this.eventFactory.create(event))
         );
     }
 }

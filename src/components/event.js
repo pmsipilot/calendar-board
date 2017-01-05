@@ -15,7 +15,7 @@ import { DateManager } from './../services/date';
             {{ event.summary }}
             <span class="pull-right">{{ event.location }}</span>
         </header>
-        <div class="panel-body">
+        <div class="panel-body" *ngIf="!!event.description && !!event.attendees.length">
             <pre *ngIf="!!event.description">{{ event.description }}</pre>
             <person-label-component *ngFor="let person of event.attendees" [person]="person"></person-label-component>
         </div>

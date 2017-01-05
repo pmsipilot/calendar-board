@@ -8,31 +8,39 @@ import { DateManager } from './../services/date';
     selector: 'board-component',
     styles: ['h2 { margin: 0 }', 'h3 { text-align: center }'],
     template: `
-    <h2 class="pull-right">
-        <button class="btn btn-link" (click)="dateManager.decreaseDate()"><i class="fa fa-chevron-left"></i></button>
-        <i class="fa fa-calendar"></i> {{ dateManager.currentDate.toLocaleDateString() }}
-        <button class="btn btn-link" (click)="dateManager.increaseDate()"><i class="fa fa-chevron-right"></i></button>
-    </h2>
-
-    <div class="btn-group">
-        <button class="btn btn-default" [class.active]="displayer == 'list'" (click)="switchDisplayer('list')">
-            <i class="fa fa-th-large"></i>
-        </button>
-        <button class="btn btn-default" [class.active]="displayer == 'table'" (click)="switchDisplayer('table')">
-            <i class="fa fa-th-list"></i>
-        </button>
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="pull-right">
+                <button class="btn btn-link" (click)="dateManager.decreaseDate()"><i class="fa fa-chevron-left"></i></button>
+                <i class="fa fa-calendar"></i> {{ dateManager.currentDate.toLocaleDateString() }}
+                <button class="btn btn-link" (click)="dateManager.increaseDate()"><i class="fa fa-chevron-right"></i></button>
+            </h2>
+        
+            <div class="btn-group">
+                <button class="btn btn-default" [class.active]="displayer == 'list'" (click)="switchDisplayer('list')">
+                    <i class="fa fa-th-large"></i>
+                </button>
+                <button class="btn btn-default" [class.active]="displayer == 'table'" (click)="switchDisplayer('table')">
+                    <i class="fa fa-th-list"></i>
+                </button>
+            </div>
+            <hr/>
+        </div>
     </div>
-    <hr/>
 
-    <div class="col-md-12" *ngIf="displayer == 'list'">
-        <div *ngIf="hasNothingToShow()" class="alert alert-info">
-            <p>Plus aucun évenement programmé pour le {{ dateManager.currentDate.toLocaleDateString() }}.<br/>
-            Utilisez les boutons <i class="fa fa-chevron-left"></i> et <i class="fa fa-chevron-right"></i> pour naviguer de jour en jour.</p>
-
-            <p>La page se met à jour toutes les 10 min automatiquement. Vous pouvez appuyer sur le bouton <i class="fa fa-refresh"></i> pour réinitialiser la vue.</p>
+    <div *ngIf="displayer == 'list'">
+        <div class="row">
+            <div class="col-md-12">
+                <div *ngIf="hasNothingToShow()" class="alert alert-info">
+                    <p>Plus aucun évenement programmé pour le {{ dateManager.currentDate.toLocaleDateString() }}.<br/>
+                    Utilisez les boutons <i class="fa fa-chevron-left"></i> et <i class="fa fa-chevron-right"></i> pour naviguer de jour en jour.</p>
+        
+                    <p>La page se met à jour toutes les 10 min automatiquement. Vous pouvez appuyer sur le bouton <i class="fa fa-refresh"></i> pour réinitialiser la vue.</p>
+                </div>
+            </div>
         </div>
 
-        <div>
+        <div class="row">
             <div class="col-md-12" *ngIf="getWholeDayEvents().length > 0">
                 <article *ngFor="let event of getWholeDayEvents(hour)" class="col-md-6">
                     <event-component [event]="event"></event-component>
@@ -40,7 +48,7 @@ import { DateManager } from './../services/date';
             </div>
         </div>
 
-        <div *ngFor="let hour of relativeHours">
+        <div class="row" *ngFor="let hour of relativeHours">
             <!-- a changer pour ne pas avoir 2x getEventsByHour(hour) -->
             <div class="col-md-12" *ngIf="getEventsByHour(hour).length > 0">
                 <h3>{{ hour }} h</h3>
@@ -50,30 +58,32 @@ import { DateManager } from './../services/date';
             </div>
         </div>
     </div>
-
-    <div class="col-md-12" *ngIf="displayer == 'table'">
-        <table class="table table-striped">
-            <tr>
-                <th></th>
-                <th *ngFor="let calendar of calendars">{{ calendar.summary }}</th>
-            </tr>
-            <tr>
-                <th></th>
-                <td *ngFor="let calendar of calendars">
-                    <article *ngFor="let event of calendar.getWholeDayEvents()">
-                        <event-component [event]="event" [displayer]="'compact'"></event-component>
-                    </article>
-                </td>
-            </tr>
-            <tr *ngFor="let hour of hours">
-                <td>{{ hour }} h</td>
-                <td *ngFor="let calendar of calendars">
-                    <article *ngFor="let event of calendar.getEventsByStartHour(hour)">
-                        <event-component [event]="event" [displayer]="'compact'"></event-component>
-                    </article>
-                </td>
-            </tr>
-        </table>
+    
+    <div class="row" *ngIf="displayer == 'table'">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <tr>
+                    <th></th>
+                    <th *ngFor="let calendar of calendars">{{ calendar.summary }}</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td *ngFor="let calendar of calendars">
+                        <article *ngFor="let event of calendar.getWholeDayEvents()">
+                            <event-component [event]="event" [displayer]="'compact'"></event-component>
+                        </article>
+                    </td>
+                </tr>
+                <tr *ngFor="let hour of hours">
+                    <td>{{ hour }} h</td>
+                    <td *ngFor="let calendar of calendars">
+                        <article *ngFor="let event of calendar.getEventsByStartHour(hour)">
+                            <event-component [event]="event" [displayer]="'compact'"></event-component>
+                        </article>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>`
 })
 export class BoardComponent {
