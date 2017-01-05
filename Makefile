@@ -4,7 +4,6 @@ BIN_DIR = ./node_modules/.bin
 BIN_FILE = $(DIST_DIR)/app.js
 
 ALL_SRC = $(shell find src/ -type f -iname '*.js')
-ALL_CONFIG = $(shell find config/ -type f -iname '*.js')
 
 build: $(BIN_FILE)
 
@@ -22,7 +21,7 @@ node_modules: package.json
 $(DIST_DIR):
 	mkdir -p $@
 
-$(BIN_FILE): $(DIST_DIR) node_modules $(ALL_SRC) $(ALL_CONFIG) Makefile
+$(BIN_FILE): $(DIST_DIR) node_modules $(ALL_SRC) Makefile
 	$(BIN_DIR)/browserify index.js -o $(BIN_FILE) \
 		-t [ babelify ] \
 		-t [ envify \
@@ -33,5 +32,3 @@ $(BIN_FILE): $(DIST_DIR) node_modules $(ALL_SRC) $(ALL_CONFIG) Makefile
 			--CALENDARBOARD_CALENDARS=$(CALENDARBOARD_CALENDARS) \
 		]
 
-$(CONFIG_DIR)/key.js: $(CONFIG_DIR)/key.dist.js
-	cp $< $@
